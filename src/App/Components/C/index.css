@@ -1,0 +1,12 @@
+.C {
+  display: block;
+  width: 100%;
+}
+
+.imgC {
+  width: 66%;
+  min-width: 320px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}

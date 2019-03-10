@@ -8,28 +8,27 @@ const path = require("path");
 const fs = require("fs");
 
 export default (req, res, next) => {
-    const filePath = path.resolve(__dirname, '..', '..', 'build', 'index.html');
-    fs.readFile(filePath, 'utf8', (err, htmlData) => {
-        if (err) {
-            console.error('err', err);
-            return res.status(404).end()
-        }
-        const statsFile = path.resolve(__dirname, '..', '..', 'build', 'loadable-stats.json')
-        const extractor = new ChunkExtractor({ statsFile })
-        const jsx = extractor.collectChunks(<App />)
-        const html = ReactDOMServer.renderToString(jsx)
-        res.set('content-type', 'text/html')
-        return res.send(`<!DOCTYPE html>
-<html>
+    const statsFile = path.resolve(__dirname, '..', '..', 'build', 'loadable-stats.json')
+    const extractor = new ChunkExtractor({ statsFile })
+    const jsx = extractor.collectChunks(<App />)
+    const html = ReactDOMServer.renderToString(jsx)
+    res.set('content-type', 'text/html')
+    res.send(`<!DOCTYPE html>
+<html lang="en">
 <head>
-${extractor.getLinkTags()}
+<meta charset="utf-8" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+<meta name="theme-color" content="#000000" />
+<link rel="manifest" href="/manifest.json" />
 ${extractor.getStyleTags()}
+<title>React Code Splitting</title>
 </head>
 <body>
-<div id="main">${html}</div>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">${html}</div>
 ${extractor.getScriptTags()}
 </body>
 </html>
 `)
-    });
 }

@@ -7,11 +7,12 @@ const path = require('path');
 const app = express();
 const router = express.Router();
 
-router.use('/', serverRenderer);
 router.use(express.static(
     path.resolve(__dirname, '..', 'build'),
     { maxAge: '30d' },
 ));
+router.use('/', serverRenderer);
+router.use('*', serverRenderer);
 app.use(router);
 
 app.listen(PORT, (error) => {
